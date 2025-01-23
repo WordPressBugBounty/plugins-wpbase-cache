@@ -2,7 +2,7 @@
 Contributors: baseapp
 Tags: cache,chaching,speed,performance,db cache,optimization,nginx,varnish
 Requires at least: 3.5
-Tested up to: 5.9
+Tested up to: 6.7
 Stable tag: trunk
 Donate link:
 License: GPLv2 or later

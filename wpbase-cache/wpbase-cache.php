@@ -3,7 +3,7 @@
   Plugin Name: WPBase-Cache
   Plugin URI: https://www.wpoven.com/
   Description: Custom WordPress Caching plugin for WPOven Hosted Sites which uses all caches on varnish, nginx, php-fpm stack and Redis.
-  Version: 5.5.5
+  Version: 5.5.6
   Author: Vikrant Datta
   Author URI: https://www.wpoven.com/
   License: GPL2
