@@ -250,23 +250,35 @@ class WPORedisObjectCache {
 
 	}
 
+	public function do_admin_actions() {
+		if ( ! is_admin() || ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
 
+		if ( empty( $_POST['wpbase_cache_options']['redis_cache'] ) && ! array_key_exists( 'redis_cache', (array) $_POST['wpbase_cache_options'] ) ) {
+			return;
+		}
 
-        public function do_admin_actions() {
-        	if(strpos($_SERVER["HTTP_REFERER"], "options-general.php?page=wpbasecache") !== false){
-                	global $wp_filesystem;
-                	if ( $this->initialize_filesystem( $url, true ) ) {
-	                        if ($_POST['wpbase_cache_options']['redis_cache'] == '1') {
-        	                        update_option('wpbase_cache_options', 'redis_cache', "1");
-                	                $wp_filesystem->copy(plugin_dir_path(__FILE__) . '/includes/object-cache.php', WP_CONTENT_DIR . '/object-cache.php', true);
-                        	        do_action( 'redis_object_cache_enable', $result );
-                        	} else if ($_POST['wpbase_cache_options']['redis_cache'] == NULL || $_POST['wpbase_cache_options']['redis_cache'] == '0') {
-                                	update_option('wpbase_cache_options', 'redis_cache', '0');
-                        	        $wp_filesystem->delete(WP_CONTENT_DIR . '/object-cache.php');
-                                	do_action( 'redis_object_cache_disable', $result );
-                        	}
-                	}
-       		}
+		if ( ! empty( $_SERVER['HTTP_REFERER'] ) && false !== strpos( wp_unslash( $_SERVER['HTTP_REFERER'] ), 'options-general.php?page=wpbasecache' ) ) {
+			global $wp_filesystem;
+			$options = get_option( 'wpbase_cache_options', array() );
+			$redis_cache = sanitize_text_field( wp_unslash( $_POST['wpbase_cache_options']['redis_cache'] ) );			
+
+			if ( $redis_cache === '1' ) {
+				$options['redis_cache'] = 1;
+				if ( $this->initialize_filesystem( admin_url( 'options-general.php?page=wpbasecache' ), true ) ) {
+					$wp_filesystem->copy( plugin_dir_path( __FILE__ ) . '/includes/object-cache.php', WP_CONTENT_DIR . '/object-cache.php', true );
+					do_action( 'redis_object_cache_enable', $result );
+				}
+			} else {
+				$options['redis_cache'] = 0;
+				if ( $this->initialize_filesystem( admin_url( 'options-general.php?page=wpbasecache' ), true ) ) {
+					$wp_filesystem->delete( WP_CONTENT_DIR . '/object-cache.php' );
+					do_action( 'redis_object_cache_disable', $result );
+				}
+			}
+			update_option( 'wpbase_cache_options', $options );
+		}
 	}
 
 	public function initialize_filesystem( $url, $silent = false ) {

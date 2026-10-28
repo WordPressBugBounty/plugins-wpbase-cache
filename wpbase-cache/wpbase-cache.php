@@ -3,7 +3,7 @@
   Plugin Name: WPBase-Cache
   Plugin URI: https://www.wpoven.com/
   Description: Custom WordPress Caching plugin for WPOven Hosted Sites which uses all caches on varnish, nginx, php-fpm stack and Redis.
-  Version: 5.5.6
+  Version: 5.5.7
   Author: Vikrant Datta
   Author URI: https://www.wpoven.com/
   License: GPL2
@@ -50,7 +50,7 @@ function is_wpoven_site() {
     $check_cache = get_option('wpbase_check_site', NULL);
 
     if (!isset($check_cache)) {
-        $content = wp_remote_get("https://wpoven.com/sites/check/wpbasecachecheck/" . $sitename);
+        $content = wp_remote_get("https://app.wpoven.com/sites/check/wpbasecachecheck/" . $sitename);
         $content = (int) $content;
         update_option('wpbase_check_site', $content);
     } else {
@@ -74,7 +74,7 @@ function check_wpoven_site() {
             $req_cache = get_option('wpbase_req_cache_new');
             $req_cache = json_decode($req_cache, true);
             if (!get_option('wpbase_req_cache_new')) {
-                $content = wp_remote_get("https://wpoven.com/sites/checksiteinfo/" . $sitename);
+                $content = wp_remote_get("https://app.wpoven.com/sites/checksiteinfo/" . $sitename);
                 $return_array = json_decode($content['body'], true);
                 update_option('wpbase_req_cache_new', $content['body']);
             } else {
@@ -95,7 +95,7 @@ function check_wpoven_site() {
                 $args = array(
                     'id' => 'WPOven-button',
                     'title' => 'WPOven Site Dashboard',
-                    'href' => 'https://wpoven.com/sites/edit/' . $sitename,
+                    'href' => 'https://app.wpoven.com/sites/edit/' . $sitename,
                     'meta' => array(
                         'class' => 'dashboard-button-class'
                     )

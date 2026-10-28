@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Redis Object Cache Drop-In
+ * Drop In Name: Redis Object Cache Drop-In
  * Plugin URI: http://wordpress.org/plugins/redis-cache/
  * Description: A persistent object cache backend powered by Redis. Supports Predis, PhpRedis, Credis, HHVM, replication, clustering and WP-CLI.
  * Version: 2.0.24-dev
@@ -16,8 +16,8 @@ defined( '\\ABSPATH' ) || exit;
 
 // phpcs:disable Generic.WhiteSpace.ScopeIndent.IncorrectExact, Generic.WhiteSpace.ScopeIndent.Incorrect
 if ( ! defined( 'WP_REDIS_DISABLED' ) || ! WP_REDIS_DISABLED ) :
-define('WP_CACHE_KEY_SALT', DB_NAME);    
 
+define('WP_CACHE_KEY_SALT', DB_NAME);    
 
 /**
  * Adds a value to cache.
